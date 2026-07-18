@@ -15,9 +15,7 @@ const DURACOES_MAP: Record<string, { "Primeira vez": number; "Manutenção": num
   "Mão Comum":             { "Primeira vez": 30,  "Manutenção": 30  },
   "Pé Comum":              { "Primeira vez": 40,  "Manutenção": 40  },
   "Mão + Pé Comum":        { "Primeira vez": 70,  "Manutenção": 70  },
-  "Manutenção":            { "Primeira vez": 120, "Manutenção": 120 },
   "Plástica dos Pés":      { "Primeira vez": 90,  "Manutenção": 90  },
-  "Curso de unhas":        { "Primeira vez": 90,  "Manutenção": 90  },
 };
 
 type TipoProcedimento = { "Primeira vez": number; "Manutenção": number };
@@ -31,15 +29,23 @@ const PROCEDIMENTOS: Record<string, { duracao: TipoProcedimento; preco?: { "Prim
   "Mão Comum":             { duracao: DURACOES_MAP["Mão Comum"],             preco: { "Primeira vez": 35,  "Manutenção": 35  } },
   "Pé Comum":              { duracao: DURACOES_MAP["Pé Comum"],              preco: { "Primeira vez": 40,  "Manutenção": 40  } },
   "Mão + Pé Comum":        { duracao: DURACOES_MAP["Mão + Pé Comum"],        preco: { "Primeira vez": 70,  "Manutenção": 70  } },
-  "Manutenção":            { duracao: DURACOES_MAP["Manutenção"] },
   "Plástica dos Pés":      { duracao: DURACOES_MAP["Plástica dos Pés"] },
-  "Curso de unhas":        { duracao: DURACOES_MAP["Curso de unhas"] },
+ 
 };
 
 const procedimentos = Object.keys(PROCEDIMENTOS);
 
 // Todos os slots possíveis do dia (de 09:00 até 17:00)
-const HORARIOS = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+const HORARIOS = [
+  "09:00", "09:30",
+  "10:00", "10:30",
+  "11:00", "11:30",
+  "13:00", "13:30",
+  "14:00", "14:30",
+  "15:00", "15:30",
+  "16:00", "16:30",
+  "17:00", "17:30",
+];
 
 // Converte "HH:MM" em minutos desde meia-noite
 function toMin(h: string) {

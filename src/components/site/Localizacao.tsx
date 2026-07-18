@@ -1,10 +1,4 @@
 import { Instagram, MapPin, MessageCircle } from "lucide-react";
-import espaco1 from "@/assets/Espaco6.jpeg";
-import espaco2 from "@/assets/Espaco2.jpeg";
-import espaco3 from "@/assets/Espaco3.jpeg";
-import espaco4 from "@/assets/Espaco4.jpeg";
-
-const espacoFotos = [espaco1, espaco2, espaco3, espaco4];
 
 export function Localizacao() {
   const address = "Rua Vitória, 216 - Vila São Jorge, Barueri - SP, 06402-030";
@@ -65,25 +59,6 @@ export function Localizacao() {
               </a>
             </li>
           </ul>
-        </div>
-
-        {/* Meu Espaço */}
-        <div className="mt-20">
-          <h3 className="font-serif text-3xl md:text-4xl">Meu Espaço</h3>
-          <div className="mt-3 h-px w-full max-w-sm bg-white/60" />
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {espacoFotos.map((src, i) => (
-              <figure key={i} className="group relative overflow-hidden rounded-xl aspect-square shadow-soft ring-1 ring-white/10">
-                <img
-                  src={src}
-                  alt={`Espaço Izabeli Nails ${i + 1}`}
-                  loading="lazy"
-                  className="size-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                />
-                <div className="pointer-events-none absolute inset-0 ring-0 ring-brand-gold transition-all duration-300 group-hover:ring-2 group-hover:shadow-gold rounded-xl" />
-              </figure>
-            ))}
-          </div>
         </div>
 
         <div className="mt-14 h-px w-full max-w-md ml-auto bg-white/60" />
