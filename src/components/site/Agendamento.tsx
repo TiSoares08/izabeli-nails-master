@@ -45,6 +45,7 @@ const HORARIOS = [
   "15:00", "15:30",
   "16:00", "16:30",
   "17:00", "17:30",
+  "18:00", "18:30",
 ];
 
 // Converte "HH:MM" em minutos desde meia-noite
@@ -66,7 +67,7 @@ function slotsOcupados(inicio: string, duracaoMin: number): string[] {
 }
 
 function horariosDisponiveis(intervalos: Intervalo[], duracaoMin: number): string[] {
-  const FIM_EXPEDIENTE = toMin("18:00");
+  const FIM_EXPEDIENTE = toMin("19:00");
   return HORARIOS.filter((h) => {
     const inicioMin = toMin(h);
     const fimMin = inicioMin + duracaoMin;
