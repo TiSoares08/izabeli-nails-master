@@ -45,7 +45,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 text-center py-4 text-xs text-white/40">
-        © {new Date().getFullYear()} Nikki Goulart — Designer. Todos os direitos reservados.
+        © {new Date().getFullYear()} Tiago Soares — Designer. Todos os direitos reservados.
       </div>
     </footer>
   );
