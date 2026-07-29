@@ -6,6 +6,7 @@ import { Numeros } from "@/components/site/Numeros";
 import { Tecnicas } from "@/components/site/Tecnicas";
 import { Precos } from "@/components/site/Precos";
 import { Inspiracoes } from "@/components/site/Inspiracoes";
+import { AnteDepois } from "@/components/site/AnteDepois";
 import { Espaco } from "@/components/site/Espaco";
 import { Feedbacks } from "@/components/site/Feedbacks";
 import { FAQ } from "@/components/site/FAQ";
@@ -47,6 +48,7 @@ function Index() {
         <Tecnicas />
         <Precos />
         <Inspiracoes />
+        <AnteDepois />
         <Espaco />
         <Feedbacks />
         <Instagram />
