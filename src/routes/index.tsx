@@ -2,28 +2,32 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { About } from "@/components/site/About";
+import { Numeros } from "@/components/site/Numeros";
 import { Tecnicas } from "@/components/site/Tecnicas";
+import { Precos } from "@/components/site/Precos";
 import { Inspiracoes } from "@/components/site/Inspiracoes";
 import { Espaco } from "@/components/site/Espaco";
 import { Feedbacks } from "@/components/site/Feedbacks";
+import { FAQ } from "@/components/site/FAQ";
+import { Curso } from "@/components/site/Curso";
+import { Instagram } from "@/components/site/Instagram";
 import { Agendamento } from "@/components/site/Agendamento";
 import { Localizacao } from "@/components/site/Localizacao";
 import { Footer } from "@/components/site/Footer";
+import { CustomCursor } from "@/components/site/CustomCursor";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
+import { BackToTop } from "@/components/site/BackToTop";
+import { BannerUrgencia } from "@/components/site/BannerUrgencia";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Izabeli Nails — Nail Designer em Barueri" },
-      {
-        name: "description",
-        content:
-          "Alongamentos de unhas em Barueri com Izabeli Silva. Fibra de vidro, molde F1, banho de gel e mais. Agende pelo WhatsApp.",
-      },
+      { name: "description", content: "Alongamentos de unhas em Barueri com Izabeli Silva. Fibra de vidro, molde F1, banho de gel, esmaltação em gel e muito mais. Agende pelo WhatsApp." },
       { property: "og:title", content: "Izabeli Nails — Nail Designer em Barueri" },
-      {
-        property: "og:description",
-        content: "Alongamentos de unhas em Barueri. Técnicas modernas e curso disponível.",
-      },
+      { property: "og:description", content: "Alongamentos de unhas em Barueri com Izabeli Silva. Fibra de vidro, molde F1, banho de gel e mais. Agende pelo WhatsApp." },
+      { name: "twitter:title", content: "Izabeli Nails — Nail Designer em Barueri" },
+      { name: "twitter:description", content: "Alongamentos de unhas em Barueri com Izabeli Silva. Fibra de vidro, molde F1, banho de gel e mais. Agende pelo WhatsApp." },
     ],
   }),
   component: Index,
@@ -31,19 +35,29 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background [cursor:none]">
+      <BannerUrgencia />
+      <LoadingScreen />
+      <CustomCursor />
       <Header />
       <main>
         <Hero />
         <About />
+        <Numeros />
         <Tecnicas />
+        <Precos />
         <Inspiracoes />
         <Espaco />
         <Feedbacks />
+        <Instagram />
+        <FAQ />
+        <Curso />
         <Agendamento />
         <Localizacao />
       </main>
       <Footer />
+
+      <BackToTop />
 
       <a
         href="https://wa.me/5511930443624"

@@ -4,10 +4,12 @@ import espaco3 from "@/assets/Espaco3.jpeg";
 import espaco4 from "@/assets/Espaco4.jpeg";
 import espaco5 from "@/assets/Espaco5.jpeg";
 import espaco6 from "@/assets/Espaco6.jpeg";
+import { useReveal } from "@/hooks/useReveal";
 
 export function Espaco() {
+  const { ref, visible } = useReveal();
   return (
-    <section id="espaco" className="relative bg-brand-cream overflow-hidden">
+    <section ref={ref as React.Ref<HTMLElement>} id="espaco" className={`relative bg-brand-cream overflow-hidden transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
       <div className="absolute -left-24 top-0 size-72 rounded-full bg-brand-gold/20 blur-3xl" />
       <div className="absolute -right-24 bottom-0 size-72 rounded-full bg-brand-brown/10 blur-3xl" />
 

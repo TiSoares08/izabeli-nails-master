@@ -3,10 +3,12 @@ import about2 from "@/assets/izabeli1.jpeg";
 import about3 from "@/assets/izabeli3.jpeg";
 import about4 from "@/assets/izabeli4.jpeg";
 import { useEffect, useState } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 const images = [about1, about2, about3, about4];
 
 export function About() {
+  const { ref, visible } = useReveal();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ export function About() {
   }, []);
 
   return (
-    <section id="sobre" className="relative bg-brand-brown text-white overflow-hidden">
+    <section ref={ref as React.Ref<HTMLElement>} id="sobre" className={`relative bg-brand-brown text-white overflow-hidden transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
       <div className="container mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center px-4 py-16 md:py-24">
         {/* Photo of Izabeli that blends into the brown background */}
         <div className="relative">

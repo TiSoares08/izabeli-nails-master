@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Clock, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 type Categoria = "Todos" | "Alongamentos" | "Esmaltação" | "Pés" | "Adicionais";
 
@@ -30,6 +31,7 @@ const tecnicas: Tecnica[] = [
 ];
 
 export function Tecnicas() {
+  const { ref, visible } = useReveal();
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [selected, setSelected] = useState(0);
   const [snaps, setSnaps] = useState<number[]>([]);
@@ -59,7 +61,7 @@ export function Tecnicas() {
   }, [emblaApi, filtro]);
 
   return (
-    <section id="tecnicas" className="bg-white">
+    <section ref={ref as React.Ref<HTMLElement>} id="tecnicas" className={`bg-white transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>

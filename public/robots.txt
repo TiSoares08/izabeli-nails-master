@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://izabelinails.com.br/sitemap.xml

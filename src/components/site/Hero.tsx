@@ -1,6 +1,51 @@
 import heroImage from "@/assets/IZABELI NAILS.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown, MessageCircle, Sparkles } from "lucide-react";
+
+function Particles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const particles = Array.from({ length: 38 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 0.5,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: -(Math.random() * 0.4 + 0.1),
+      alpha: Math.random() * 0.5 + 0.2,
+    }));
+
+    let raf: number;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `oklch(0.78 0.11 85 / ${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
+        if (p.x < -5) p.x = canvas.width + 5;
+        if (p.x > canvas.width + 5) p.x = -5;
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 size-full pointer-events-none z-10" />;
+}
 
 export function Hero() {
   const [hover, setHover] = useState(false);
@@ -13,7 +58,7 @@ export function Hero() {
           alt="Izabeli Nails — Alongamentos de unhas em Barueri"
           className="block w-full h-auto scale-[1.01] transition-transform duration-[2500ms] ease-out hover:scale-[1.025]"
         />
-
+        <Particles />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10 pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
       </div>

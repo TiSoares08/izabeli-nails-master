@@ -1,4 +1,5 @@
 import { Quote, Star } from "lucide-react";
+import { useReveal } from "@/hooks/useReveal";
 
 const feedbacks = [
   {
@@ -27,8 +28,9 @@ const feedbacks = [
 const palette = ["bg-brand-brown", "bg-brand-brown-deep", "bg-brand-gold"];
 
 export function Feedbacks() {
+  const { ref, visible } = useReveal();
   return (
-    <section id="feedbacks" className="bg-white">
+    <section ref={ref as React.Ref<HTMLElement>} id="feedbacks" className={`bg-white transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
       <div className="container mx-auto px-4 py-16 md:py-24">
         <h2 className="font-serif text-4xl md:text-5xl text-foreground">Feedbacks</h2>
         <div className="mt-3 h-px w-full max-w-md bg-brand-gold" />

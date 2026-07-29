@@ -1,4 +1,5 @@
-import { CalendarDays, ChevronLeft, ChevronRight, MessageCircle, Sparkles } from "lucide-react";
+import { CalendarDays, CalendarPlus, CheckCircle2, ChevronLeft, ChevronRight, MessageCircle, Sparkles } from "lucide-react";
+import { Disponibilidade } from "@/components/site/Disponibilidade";
 import { FormEvent, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -171,7 +172,17 @@ function Calendar({
   );
 }
 
+type Confirmacao = {
+  nome: string;
+  procedimento: string;
+  tipo: string;
+  data: string;
+  horario: string;
+  preco?: number;
+};
+
 export function Agendamento() {
+  const [confirmacao, setConfirmacao] = useState<Confirmacao | null>(null);
   const [form, setForm] = useState({
     nome: "",
     telefone: "",
@@ -298,9 +309,6 @@ export function Agendamento() {
       return novos;
     });
 
-    // Reseta o horário selecionado
-    update("horario", "");
-
     const precoLinha = preco !== undefined ? `\n💰 *Valor:* R$ ${preco},00` : "";
     const mensagem = `Olá Izabeli! Gostaria de agendar um horário.\n\n📋 *Procedimento:* ${form.procedimento}\n✨ *Tipo:* ${form.tipo}${precoLinha}\n📅 *Data:* ${dataFormatada}\n🕐 *Horário:* ${form.horario}\n👤 *Nome:* ${form.nome}\n📱 *Telefone:* ${form.telefone}${form.observacoes ? `\n📝 *Observações:* ${form.observacoes}` : ""}`;
 
@@ -309,7 +317,100 @@ export function Agendamento() {
       "_blank",
       "noopener,noreferrer",
     );
+
+    setConfirmacao({
+      nome: form.nome,
+      procedimento: form.procedimento,
+      tipo: form.tipo,
+      data: dataFormatada,
+      horario: form.horario,
+      preco,
+    });
   };
+
+  if (confirmacao) {
+    return (
+      <section id="agendamento" className="relative overflow-hidden bg-brand-cream">
+        <div className="absolute -left-20 top-10 size-56 rounded-full bg-brand-gold/20 blur-3xl" />
+        <div className="absolute -right-20 bottom-10 size-72 rounded-full bg-brand-brown/15 blur-3xl" />
+        <div className="container relative mx-auto flex min-h-[60vh] items-center justify-center px-4 py-16">
+          <div className="w-full max-w-md rounded-3xl border border-brand-gold/50 bg-white p-8 shadow-soft text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <CheckCircle2 className="mx-auto size-16 text-brand-gold mb-4" strokeWidth={1.5} />
+            <h3 className="font-serif text-3xl text-foreground">Agendamento enviado!</h3>
+            <p className="mt-2 text-sm text-foreground/60">Sua solicitação foi enviada pelo WhatsApp. Aguarde a confirmação da Izabeli 💅</p>
+
+            <div className="mt-6 rounded-2xl bg-brand-cream/70 border border-brand-gold/30 p-5 text-left space-y-2.5 text-sm">
+              <div className="flex justify-between">
+                <span className="text-foreground/50">Nome</span>
+                <span className="font-medium text-foreground">{confirmacao.nome}</span>
+              </div>
+              <div className="h-px bg-brand-gold/20" />
+              <div className="flex justify-between">
+                <span className="text-foreground/50">Procedimento</span>
+                <span className="font-medium text-foreground">{confirmacao.procedimento}</span>
+              </div>
+              <div className="h-px bg-brand-gold/20" />
+              <div className="flex justify-between">
+                <span className="text-foreground/50">Tipo</span>
+                <span className="font-medium text-foreground">{confirmacao.tipo}</span>
+              </div>
+              <div className="h-px bg-brand-gold/20" />
+              <div className="flex justify-between">
+                <span className="text-foreground/50">Data</span>
+                <span className="font-medium text-foreground">{confirmacao.data}</span>
+              </div>
+              <div className="h-px bg-brand-gold/20" />
+              <div className="flex justify-between">
+                <span className="text-foreground/50">Horário</span>
+                <span className="font-medium text-foreground">{confirmacao.horario}</span>
+              </div>
+              {confirmacao.preco !== undefined && (
+                <>
+                  <div className="h-px bg-brand-gold/20" />
+                  <div className="flex justify-between">
+                    <span className="text-foreground/50">Valor</span>
+                    <span className="font-semibold text-brand-brown-deep">R$ {confirmacao.preco},00</span>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {(() => {
+              const [ano, mes, dia] = confirmacao.data.split("/").reverse();
+              const [hh, mm] = confirmacao.horario.split(":");
+              const start = `${ano}${mes}${dia}T${hh}${mm}00`;
+              const duracaoMin = PROCEDIMENTOS[confirmacao.procedimento]?.duracao[confirmacao.tipo as "Primeira vez" | "Manutenção"] ?? 60;
+              const endDate = new Date(Number(ano), Number(mes) - 1, Number(dia), Number(hh), Number(mm) + duracaoMin);
+              const end = `${endDate.getFullYear()}${String(endDate.getMonth()+1).padStart(2,"0")}${String(endDate.getDate()).padStart(2,"0")}T${String(endDate.getHours()).padStart(2,"0")}${String(endDate.getMinutes()).padStart(2,"0")}00`;
+              const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Izabeli Nails — ${confirmacao.procedimento}`)}&dates=${start}/${end}&details=${encodeURIComponent(`Procedimento: ${confirmacao.procedimento} (${confirmacao.tipo})\nEndereço: Rua Vitória, 216 - Barueri SP`)}&location=${encodeURIComponent("Rua Vitória, 216 - Barueri, SP")}`;
+              return (
+                <a
+                  href={gcalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-brown-deep px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-brown"
+                >
+                  <CalendarPlus className="size-4" />
+                  Salvar no Google Calendar
+                </a>
+              );
+            })()}
+
+            <button
+              type="button"
+              onClick={() => {
+                setConfirmacao(null);
+                setForm({ nome: "", telefone: "", procedimento: procedimentos[0], tipo: "Primeira vez", data: "", horario: "", observacoes: "" });
+              }}
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-brand-gold/50 bg-brand-cream px-6 py-3 text-sm font-semibold text-brand-brown-deep transition-all hover:bg-brand-gold/20"
+            >
+              Fazer novo agendamento
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="agendamento" className="relative overflow-hidden bg-brand-cream">
@@ -337,6 +438,9 @@ export function Agendamento() {
                 <p className="text-sm text-foreground/65">Domingos não são atendidos.</p>
               </div>
             </div>
+          </div>
+          <div className="mt-4">
+            <Disponibilidade />
           </div>
         </div>
 

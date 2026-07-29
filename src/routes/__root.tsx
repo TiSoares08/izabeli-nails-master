@@ -77,25 +77,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "A dynamic landing page for nail designers, showcasing services with interactive elements." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "A dynamic landing page for nail designers, showcasing services with interactive elements." },
+      { name: "theme-color", content: "#8B6F5E" },
+      { name: "author", content: "Izabeli Silva" },
+      { name: "robots", content: "index, follow" },
+      { name: "keywords", content: "nail designer barueri, alongamento de unhas barueri, fibra de vidro, molde f1, banho de gel, esmaltação em gel, manicure barueri, izabeli nails" },
+      // Open Graph
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "A dynamic landing page for nail designers, showcasing services with interactive elements." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d0c25eb7-6055-46e7-abb8-86c440c48b66/id-preview-f2c1cfc5--4b791a9b-a8bd-4a94-9bac-33a544fc0d6d.lovable.app-1780237109992.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d0c25eb7-6055-46e7-abb8-86c440c48b66/id-preview-f2c1cfc5--4b791a9b-a8bd-4a94-9bac-33a544fc0d6d.lovable.app-1780237109992.png" },
+      { property: "og:url", content: "https://izabelinails.com.br" },
+      { property: "og:site_name", content: "Izabeli Nails" },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:image", content: "https://izabelinails.com.br/favicon.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Izabeli Nails — Nail Designer em Barueri" },
+      // Twitter/X
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@izabelinails_" },
+      { name: "twitter:image", content: "https://izabelinails.com.br/favicon.png" },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/favicon.png" },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "canonical", href: "https://izabelinails.com.br" },
+      { rel: "stylesheet", href: appCss },
     ],
   }),
   shellComponent: RootShell,
@@ -105,10 +108,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BeautySalon",
+    name: "Izabeli Nails",
+    description: "Nail designer especialista em alongamentos de unhas em Barueri-SP. Fibra de vidro, molde F1, banho de gel e esmaltação em gel.",
+    url: "https://izabelinails.com.br",
+    telephone: "+55-11-93279-2798",
+    image: "https://izabelinails.com.br/favicon.png",
+    priceRange: "R$35 - R$200",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Rua Vitória, 216",
+      addressLocality: "Barueri",
+      addressRegion: "SP",
+      postalCode: "06401-070",
+      addressCountry: "BR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: -23.5116,
+      longitude: -46.8756,
+    },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], opens: "09:00", closes: "19:00" },
+    ],
+    sameAs: ["https://instagram.com/izabelinails_"],
+  };
+
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body>
         {children}
