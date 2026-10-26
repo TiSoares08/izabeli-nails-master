@@ -7,6 +7,7 @@ import nails6 from "@/assets/nail6.jpeg";
 import nails7 from "@/assets/nail7.jpeg";
 import nails8 from "@/assets/nail8.jpeg";
 import nails9 from "@/assets/nail9.jpeg";
+import nails10 from "@/assets/nail10.jpeg";
 
 
 type Item = {
@@ -24,7 +25,7 @@ const items: Item[] = [
   { src: nails6, className: "col-span-3 row-span-3 col-start-9 row-start-4 rotate-[-2deg]", dimmed: false },
   { src: nails7, className: "col-span-3 row-span-3 col-start-1 row-start-7 rotate-[2deg]", dimmed: true },
   { src: nails8, className: "col-span-3 row-span-3 col-start-5 row-start-6 rotate-[-1deg]", dimmed: false },
-  { src: nails9, className: "col-span-3 row-span-3 col-start-9 row-start-7 rotate-[2deg]", dimmed: true },
+  { src: nails10, className: "col-span-3 row-span-3 col-start-9 row-start-7 rotate-[2deg]", dimmed: true },
 ];
 
 export function Inspiracoes() {
@@ -42,7 +43,7 @@ export function Inspiracoes() {
             >
               <img
                 src={it.src}
-                alt="Trabalho de unhas Izabeli"
+                alt={`Trabalho de nail designer da Izabeli Nails em Barueri — foto ${i + 1}`}
                 loading="lazy"
                 className={`size-full object-cover transition-all duration-500 ease-out group-hover:scale-110 group-hover:saturate-150 group-hover:brightness-110 ${
                   it.dimmed ? "saturate-0 brightness-90 opacity-70" : "saturate-100"

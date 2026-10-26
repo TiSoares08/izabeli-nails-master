@@ -60,7 +60,7 @@ function Index() {
       <BackToTop />
 
       <a
-        href="https://wa.me/5511930443624"
+        href="https://wa.me/5511932792798"
         target="_blank"
         rel="noreferrer"
         aria-label="Falar pelo WhatsApp"

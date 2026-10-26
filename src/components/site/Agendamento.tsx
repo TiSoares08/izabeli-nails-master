@@ -30,7 +30,7 @@ const PROCEDIMENTOS: Record<string, { duracao: TipoProcedimento; preco?: { "Prim
   "Mão Comum":             { duracao: DURACOES_MAP["Mão Comum"],             preco: { "Primeira vez": 35,  "Manutenção": 35  } },
   "Pé Comum":              { duracao: DURACOES_MAP["Pé Comum"],              preco: { "Primeira vez": 40,  "Manutenção": 40  } },
   "Mão + Pé Comum":        { duracao: DURACOES_MAP["Mão + Pé Comum"],        preco: { "Primeira vez": 70,  "Manutenção": 70  } },
-  "Plástica dos Pés":      { duracao: DURACOES_MAP["Plástica dos Pés"] },
+  "Plástica dos Pés":      { duracao: DURACOES_MAP["Plástica dos Pés"],      preco: { "Primeira vez": 100 } },
  
 };
 
@@ -214,6 +214,7 @@ export function Agendamento() {
   const [events, setEvents] = useState<any[]>([]);
   const [intervalosSupabase, setIntervalosSupabase] = useState<Record<string, Intervalo[]>>({});
   const [loadingEvents, setLoadingEvents] = useState(true);
+  const [erroDisponibilidade, setErroDisponibilidade] = useState(false);
 
   useEffect(() => {
     const now = new Date();
@@ -222,18 +223,30 @@ export function Agendamento() {
 
     // Busca agendamentos do Supabase
     const fetchSupabase = async () => {
-      const { data } = await supabase
-        .from("agendamentos")
-        .select("data, horario, duracao")
-        .gte("data", formatDate(now))
-        .lte("data", formatDate(future));
-      const map: Record<string, Intervalo[]> = {};
-      (data ?? []).forEach((row: { data: string; horario: string; duracao?: number }) => {
-        if (!map[row.data]) map[row.data] = [];
-        map[row.data].push({ inicio: toMin(row.horario), fim: toMin(row.horario) + (row.duracao ?? 60) });
-      });
-      setIntervalosSupabase(map);
-      setLoadingEvents(false);
+      try {
+        // Tempo limite de 10s para não ficar "Carregando..." para sempre
+        const timeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("timeout")), 10000),
+        );
+        const consulta = supabase
+          .from("agendamentos")
+          .select("data, horario, duracao")
+          .gte("data", formatDate(now))
+          .lte("data", formatDate(future));
+        const { data, error } = await Promise.race([consulta, timeout]);
+        if (error) throw error;
+        const map: Record<string, Intervalo[]> = {};
+        (data ?? []).forEach((row: { data: string; horario: string; duracao?: number }) => {
+          if (!map[row.data]) map[row.data] = [];
+          map[row.data].push({ inicio: toMin(row.horario), fim: toMin(row.horario) + (row.duracao ?? 60) });
+        });
+        setIntervalosSupabase(map);
+      } catch (err) {
+        console.error("Erro ao carregar disponibilidade:", err);
+        setErroDisponibilidade(true);
+      } finally {
+        setLoadingEvents(false);
+      }
     };
     fetchSupabase();
 
@@ -442,6 +455,16 @@ export function Agendamento() {
           <div className="mt-4">
             <Disponibilidade />
           </div>
+          <div className="mt-4 rounded-3xl border border-brand-gold/40 bg-white/65 p-5 shadow-soft backdrop-blur-md">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-brown-deep">
+              Antes de agendar
+            </p>
+            <ul className="space-y-2 text-sm leading-relaxed text-foreground/75">
+              <li>✨ Não é necessário pagar sinal para reservar.</li>
+              <li>🔄 Precisa remarcar ou cancelar? Avise com pelo menos 24h de antecedência.</li>
+              <li>⏰ Tolerância de atraso de 15 minutos, depois disso pode ser necessário reagendar.</li>
+            </ul>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-3xl border border-brand-gold/50 bg-white p-6 shadow-soft md:p-8">
@@ -518,6 +541,20 @@ export function Agendamento() {
               {loadingEvents ? (
                 <div className="rounded-2xl border border-brand-gold/40 bg-brand-cream/60 p-6 text-center text-sm text-foreground/50">
                   Carregando disponibilidade...
+                </div>
+              ) : erroDisponibilidade ? (
+                <div className="rounded-2xl border border-brand-gold/40 bg-brand-cream/60 p-6 text-center text-sm text-foreground/70">
+                  <p>Não consegui carregar os horários agora. 😕</p>
+                  <p className="mt-1">Chame a Izabeli no WhatsApp que ela confirma um horário para você.</p>
+                  <a
+                    href={`https://wa.me/5511932792798?text=${encodeURIComponent("Olá Izabeli! Gostaria de agendar um horário.")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-brand-brown-deep px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-all hover:-translate-y-0.5 hover:bg-brand-brown"
+                  >
+                    <MessageCircle className="size-4" />
+                    Chamar no WhatsApp
+                  </a>
                 </div>
               ) : (
                 <Calendar

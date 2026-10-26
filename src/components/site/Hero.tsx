@@ -90,7 +90,7 @@ export function Hero() {
               </a>
 
               <a
-                href="https://wa.me/5511930443624?text=Oi%20Izabeli!%20Tenho%20interesse%20no%20curso%20de%20unhas."
+                href="https://wa.me/5511932792798?text=Oi%20Izabeli!%20Tenho%20interesse%20no%20curso%20de%20unhas."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center rounded-full border border-white/70 bg-white/70 px-5 py-3 text-xs md:text-sm font-medium text-brand-brown-deep shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"

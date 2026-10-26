@@ -28,6 +28,10 @@ const perguntas = [
     a: "O curso é presencial aqui no espaço em Barueri. Ensino a técnica de alongamento em fibra de vidro do zero, com material incluso. Entre em contato pelo WhatsApp para saber as próximas datas e valores.",
   },
   {
+    q: "Preciso pagar sinal? E se eu precisar remarcar?",
+    a: "Não precisa de sinal. Se precisar remarcar ou cancelar, é só avisar pelo WhatsApp com pelo menos 24h de antecedência. Tenho tolerância de 15 minutos de atraso; depois disso o atendimento pode precisar ser reagendado.",
+  },
+  {
     q: "Qual o endereço e como agendar?",
     a: "Fica na Rua Vitória, 216 - Vila São Jorge, Barueri - SP. O agendamento é feito direto pelo site ou pelo WhatsApp. Não atendo aos domingos.",
   },
@@ -80,7 +84,7 @@ export function FAQ() {
                 </button>
                 <div
                   className={`transition-all duration-300 ease-in-out ${
-                    isOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                    isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
                   <p className="px-6 pb-5 text-sm leading-relaxed text-foreground/70">{item.a}</p>

@@ -1,7 +1,8 @@
-import { Instagram, MapPin, MessageCircle } from "lucide-react";
+import { Instagram, MapPin, MessageCircle, Navigation } from "lucide-react";
 
 export function Localizacao() {
   const address = "Rua Vitória, 216 - Vila São Jorge, Barueri - SP, 06402-030";
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
 
   return (
@@ -30,11 +31,20 @@ export function Localizacao() {
               </span>
               <span className="font-light leading-relaxed">
                 Rua Vitória, 216 - Vila São Jorge<br />Barueri - SP, 06402-030
+                <a
+                  href={directionsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors hover:bg-white hover:text-brand-brown-deep"
+                >
+                  <Navigation className="size-3.5" />
+                  Como chegar
+                </a>
               </span>
             </li>
             <li>
               <a
-                href="https://wa.me/5511930443624"
+                href="https://wa.me/5511932792798"
                 target="_blank"
                 rel="noreferrer"
                 className="group flex items-center gap-4 hover:text-brand-gold-soft transition-colors"
@@ -42,7 +52,7 @@ export function Localizacao() {
                 <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-white/15 group-hover:bg-brand-gold/30 transition">
                   <MessageCircle className="size-5" />
                 </span>
-                (11) 93044-3624
+                (11) 93279-2798
               </a>
             </li>
             <li>

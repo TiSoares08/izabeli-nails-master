@@ -27,8 +27,8 @@ export function Header() {
         <div className="container mx-auto flex items-center justify-between px-4 py-1.5">
           <span className="font-serif tracking-wide">Izabeli Silva</span>
           <div className="flex items-center gap-4">
-            <a href="https://wa.me/5511930443624" className="hover:text-white transition-colors">
-              (11) 93044-3624
+            <a href="https://wa.me/5511932792798" className="hover:text-white transition-colors">
+              (11) 93279-2798
             </a>
             <a
               href="https://instagram.com/izabelinails_"

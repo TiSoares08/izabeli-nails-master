@@ -1,9 +1,12 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
+// Deixe como `true` só quando realmente houver poucas vagas na semana.
+const MOSTRAR_BANNER = true;
+
 export function BannerUrgencia() {
   const [fechado, setFechado] = useState(false);
-  if (fechado) return null;
+  if (!MOSTRAR_BANNER || fechado) return null;
 
   return (
     <div className="relative z-40 bg-brand-brown-deep text-white text-xs text-center py-2 px-10">

@@ -72,6 +72,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+// Troque aqui se o endereço do site mudar (domínio próprio ou Netlify).
+const SITE_URL = "https://izabelinails.com.br";
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -83,21 +87,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "keywords", content: "nail designer barueri, alongamento de unhas barueri, fibra de vidro, molde f1, banho de gel, esmaltação em gel, manicure barueri, izabeli nails" },
       // Open Graph
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://izabelinails.com.br" },
+      { property: "og:url", content: SITE_URL },
       { property: "og:site_name", content: "Izabeli Nails" },
       { property: "og:locale", content: "pt_BR" },
-      { property: "og:image", content: "https://izabelinails.com.br/favicon.png" },
+      { property: "og:image", content: OG_IMAGE },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Izabeli Nails — Nail Designer em Barueri" },
       // Twitter/X
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@izabelinails_" },
-      { name: "twitter:image", content: "https://izabelinails.com.br/favicon.png" },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "canonical", href: "https://izabelinails.com.br" },
+      { rel: "canonical", href: SITE_URL },
       { rel: "stylesheet", href: appCss },
     ],
   }),
@@ -113,16 +117,16 @@ function RootShell({ children }: { children: ReactNode }) {
     "@type": "BeautySalon",
     name: "Izabeli Nails",
     description: "Nail designer especialista em alongamentos de unhas em Barueri-SP. Fibra de vidro, molde F1, banho de gel e esmaltação em gel.",
-    url: "https://izabelinails.com.br",
+    url: SITE_URL,
     telephone: "+55-11-93279-2798",
-    image: "https://izabelinails.com.br/favicon.png",
+    image: OG_IMAGE,
     priceRange: "R$35 - R$200",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Rua Vitória, 216",
       addressLocality: "Barueri",
       addressRegion: "SP",
-      postalCode: "06401-070",
+      postalCode: "06402-030",
       addressCountry: "BR",
     },
     geo: {
@@ -133,6 +137,7 @@ function RootShell({ children }: { children: ReactNode }) {
     openingHoursSpecification: [
       { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], opens: "09:00", closes: "19:00" },
     ],
+    hasMap: "https://www.google.com/maps/search/?api=1&query=Rua+Vit%C3%B3ria+216+Barueri+SP",
     sameAs: ["https://instagram.com/izabelinails_"],
   };
 

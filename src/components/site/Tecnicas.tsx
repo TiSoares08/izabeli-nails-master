@@ -19,15 +19,15 @@ const tecnicas: Tecnica[] = [
   { nome: "Fibra de Vidro", preco: "R$ 200,00", duracao: "2 Horas", manutencao: "R$150,00 a cada 30 dias", categoria: "Alongamentos" },
   { nome: "Molde F1", preco: "R$ 180,00", duracao: "01:30 Horas", manutencao: "R$140,00 a cada 25 dias", categoria: "Alongamentos" },
   { nome: "Banho de Gel", preco: "R$ 150,00", duracao: "01:30 Horas", manutencao: "R$120,00 a cada 20 dias", categoria: "Alongamentos" },
-  { nome: "Baby Boomer", preco: "R$ 20,00", duracao: "Adicional", manutencao: "Conforme aplicação", categoria: "Adicionais" },
+  { nome: "Baby Boomer", preco: "R$ 20,00", duracao: "Adicional ao serviço", manutencao: "Conforme aplicação", categoria: "Adicionais" },
   { nome: "Encapsulada", preco: "R$ 10,00", duracao: "Por dedo", manutencao: "Conforme aplicação", categoria: "Adicionais" },
-  { nome: "Mão Esmaltação em Gel", preco: "R$ 80,00", duracao: "01:00 Hora", manutencao: "A cada 15 dias", categoria: "Esmaltação" },
-  { nome: "Pé Esmaltação em Gel", preco: "R$ 80,00", duracao: "01:00 Hora", manutencao: "A cada 20 dias", categoria: "Pés" },
+  { nome: "Mão Esmaltação em Gel", preco: "R$ 100,00", duracao: "01:00 Hora", manutencao: "A cada 15 dias", categoria: "Esmaltação" },
+  { nome: "Pé Esmaltação em Gel", preco: "R$ 100,00", duracao: "01:00 Hora", manutencao: "A cada 20 dias", categoria: "Pés" },
   { nome: "Mão Comum", preco: "R$ 35,00", duracao: "30 min", manutencao: "A cada 7 dias", categoria: "Esmaltação" },
   { nome: "Pé Comum", preco: "R$ 40,00", duracao: "40 min", manutencao: "A cada 15 dias", categoria: "Pés" },
-  { nome: "Mão + Pé Comum", preco: "R$ 65,00", duracao: "01:20 Horas", manutencao: "A cada 7 dias", categoria: "Pés" },
+  { nome: "Mão + Pé Comum", preco: "R$ 70,00", duracao: "01:20 Horas", manutencao: "A cada 7 dias", categoria: "Pés" },
   { nome: "Plástica dos Pés", preco: "R$ 100,00", duracao: "01:10 Hora", manutencao: "A cada 1 mês", categoria: "Pés" },
-  { nome: "Manutenção", preco: "A partir de R$ 120,00", duracao: "01:30 Horas", manutencao: "Conforme técnica", categoria: "Alongamentos" },
+  { nome: "Manutenção", preco: "A partir de R$ 120,00", duracao: "01:30 Horas", manutencao: "Valor varia conforme a técnica", categoria: "Alongamentos" },
 ];
 
 export function Tecnicas() {
