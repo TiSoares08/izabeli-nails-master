@@ -542,26 +542,27 @@ export function Agendamento() {
                 <div className="rounded-2xl border border-brand-gold/40 bg-brand-cream/60 p-6 text-center text-sm text-foreground/50">
                   Carregando disponibilidade...
                 </div>
-              ) : erroDisponibilidade ? (
-                <div className="rounded-2xl border border-brand-gold/40 bg-brand-cream/60 p-6 text-center text-sm text-foreground/70">
-                  <p>Não consegui carregar os horários agora. 😕</p>
-                  <p className="mt-1">Chame a Izabeli no WhatsApp que ela confirma um horário para você.</p>
-                  <a
-                    href={`https://wa.me/5511932792798?text=${encodeURIComponent("Olá Izabeli! Gostaria de agendar um horário.")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-brand-brown-deep px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-all hover:-translate-y-0.5 hover:bg-brand-brown"
-                  >
-                    <MessageCircle className="size-4" />
-                    Chamar no WhatsApp
-                  </a>
-                </div>
               ) : (
+                <>
+                  {erroDisponibilidade && (
+                    <p className="rounded-xl bg-brand-cream px-3 py-2 text-xs font-normal text-foreground/70">
+                      Não consegui conferir todos os horários ocupados agora. Se preferir, confirme direto no{" "}
+                      <a
+                        href={`https://wa.me/5511932792798?text=${encodeURIComponent("Olá Izabeli! Gostaria de agendar um horário.")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="underline underline-offset-2 text-brand-brown-deep"
+                      >
+                        WhatsApp
+                      </a>.
+                    </p>
+                  )}
                 <Calendar
                   selected={form.data}
                   onSelect={(d) => { update("data", d); update("horario", ""); }}
                   ocupadosPorDia={intervalosMesclados}
                 />
+                </>
               )}
             </div>
             {form.data && (
