@@ -3,7 +3,8 @@ import { Disponibilidade } from "@/components/site/Disponibilidade";
 import { FormEvent, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-const CALENDAR_ID = import.meta.env.VITE_GOOGLE_CALENDAR_ID as string;
+// Agenda principal da Izabeli (Gmail)
+const CALENDAR_ID = "izabeliiasmin5@gmail.com";
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY as string;
 
 // Duração em minutos por procedimento e tipo
@@ -67,12 +68,34 @@ function slotsOcupados(inicio: string, duracaoMin: number): string[] {
   });
 }
 
-function horariosDisponiveis(intervalos: Intervalo[], duracaoMin: number): string[] {
+// Data de hoje ("AAAA-MM-DD") e minutos atuais no fuso de São Paulo
+function agoraSaoPaulo() {
+  const partes = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+  const get = (t: string) => partes.find((p) => p.type === t)?.value ?? "00";
+  return {
+    dia: `${get("year")}-${get("month")}-${get("day")}`,
+    minutos: Number(get("hour")) * 60 + Number(get("minute")),
+  };
+}
+
+function horariosDisponiveis(intervalos: Intervalo[], duracaoMin: number, dia?: string): string[] {
   const FIM_EXPEDIENTE = toMin("19:00");
+  const agora = agoraSaoPaulo();
+  const ehHoje = dia === agora.dia;
   return HORARIOS.filter((h) => {
     const inicioMin = toMin(h);
     const fimMin = inicioMin + duracaoMin;
     if (fimMin > FIM_EXPEDIENTE) return false;
+    // Esconde horários de hoje que já passaram
+    if (ehHoje && inicioMin <= agora.minutos) return false;
     return !intervalos.some((iv) => inicioMin < iv.fim && fimMin > iv.inicio);
   });
 }
@@ -146,7 +169,7 @@ function Calendar({
           const isSunday = date.getDay() === 0;
           const isSelected = key === selected;
           const intervalos = ocupadosPorDia[key] ?? [];
-          const allBlocked = horariosDisponiveis(intervalos, 30).length === 0;
+          const allBlocked = horariosDisponiveis(intervalos, 30, key).length === 0;
           const disabled = isPast || isSunday || allBlocked;
 
           return (
@@ -212,6 +235,12 @@ export function Agendamento() {
     return () => observer.disconnect();
   }, []);
   const [events, setEvents] = useState<any[]>([]);
+  // Re-renderiza a cada minuto para esconder horários que já passaram
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 60_000);
+    return () => clearInterval(id);
+  }, []);
   const [intervalosSupabase, setIntervalosSupabase] = useState<Record<string, Intervalo[]>>({});
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [erroDisponibilidade, setErroDisponibilidade] = useState(false);
@@ -277,7 +306,14 @@ export function Agendamento() {
   const duracao = PROCEDIMENTOS[form.procedimento]?.duracao[tipo] ?? 60;
   const preco = PROCEDIMENTOS[form.procedimento]?.preco?.[tipo];
   const intervalosNoDia = form.data ? (intervalosMesclados[form.data] ?? []) : [];
-  const horariosDodia = horariosDisponiveis(intervalosNoDia, duracao);
+  const horariosDodia = horariosDisponiveis(intervalosNoDia, duracao, form.data);
+
+  // Se o horário escolhido já passou (ou ficou indisponível), limpa a seleção
+  useEffect(() => {
+    if (form.horario && !horariosDodia.includes(form.horario)) {
+      setForm((current) => ({ ...current, horario: "" }));
+    }
+  }, [form.horario, horariosDodia.join(",")]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
