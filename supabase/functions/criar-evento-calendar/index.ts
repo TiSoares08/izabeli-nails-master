@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const CALENDAR_ID = "d37a20d8a576cb4b734b65708c3ad1be49159f2ed14c468f6ffa1b9fbda1ef45@group.calendar.google.com";
+// Agenda principal da Izabeli (Gmail)
+const CALENDAR_ID = "izabeliiasmin5@gmail.com";
 
 function base64url(data: Uint8Array): string {
   return btoa(String.fromCharCode(...data))
@@ -70,7 +71,7 @@ serve(async (req) => {
   }
 
   try {
-    const { nome, telefone, procedimento, data, horario, observacoes } = await req.json();
+    const { nome, telefone, procedimento, data, horario, duracao, observacoes } = await req.json();
 
     const serviceAccount = JSON.parse(Deno.env.get("GOOGLE_SERVICE_ACCOUNT") ?? "{}");
     const accessToken = await getAccessToken(serviceAccount);
@@ -78,7 +79,7 @@ serve(async (req) => {
     // Monta inicio e fim do evento
     const [hora, minuto] = horario.split(":").map(Number);
     const inicio = new Date(`${data}T${horario}:00-03:00`);
-    const fim = new Date(inicio.getTime() + 60 * 60 * 1000); // +1 hora
+    const fim = new Date(inicio.getTime() + (Number(duracao) || 60) * 60 * 1000); // duração do procedimento
 
     const evento = {
       summary: `${procedimento} — ${nome}`,
